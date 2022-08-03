@@ -1,0 +1,114 @@
+#include <LiquidCrystal.h>  
+#include <stdio.h>
+
+LiquidCrystal lcd(6, 7, 8, 9, 10, 11); 
+ char gchr='x';
+int sti=0;
+String inputString = "";	// a string to hold incoming data
+  boolean stringComplete = false; // whether the string is complete
+void okcheck0()
+{
+unsigned char rcr;  do{
+rcr = Serial.read();
+}while(rcr != 'K');
+}
+
+
+void setup()
+{
+Serial.begin(9600);serialEvent();
+// mySerial.begin(9600);
+pinMode(m1b, OUTPUT); 
+ pinMode(m2a, OUTPUT); 
+
+ pinMode(m2b, OUTPUT);
+
+pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  pinMode(relay3, OUTPUT);
+
+
+// initialize serial:
+
+digitalWrite(m1b, LOW);
+  digitalWrite(m2a, LOW);  
+digitalWrite(m2b, LOW);
+
+digitalWrite(relay1, LOW);
+  digitalWrite(relay2, LOW);
+  digitalWrite(relay3, LOW);
+
+
+lcd.begin(16, 2);
+lcd.print("Floor Cleaning Robot");  delay(2000);
+serialEvent();
+}
+
+
+void loop()
+{
+
+
+delay(1000);
+}
+
+
+void serialEvent()
+{
+while (Serial.available())
+{
+char gchr = (char)Serial.read();
+Serial.write(gchr);
+
+
+if(gchr == 'f')
+{gchr='x';lcd.clear();lcd.print("Front "); 
+ digitalWrite(m1a, HIGH);digitalWrite(m1b, LOW);  digitalWrite(m2a, HIGH);digitalWrite(m2b, LOW);
+}
+if(gchr == 'b')
+{gchr='x';lcd.clear();lcd.print("Back "); 
+ digitalWrite(m1a, LOW);digitalWrite(m1b, HIGH);  digitalWrite(m2a, LOW);digitalWrite(m2b, HIGH);
+}
+if(gchr == 'r')
+{gchr='x';lcd.clear();lcd.print("Right ");  
+digitalWrite(m2a, HIGH);digitalWrite(m2b, LOW);
+digitalWrite(m1a, LOW);digitalWrite(m1b, HIGH);
+//digitalWrite(m2a, HIGH);digitalWrite(m2b, LOW);
+//digitalWrite(m1a, LOW);digitalWrite(m1b, HIGH);
+}
+if(gchr == 'l')
+{gchr='x';lcd.clear();lcd.print("Left ");  
+digitalWrite(m2a, LOW);digitalWrite(m2b, HIGH);  digitalWrite(m1a, HIGH);digitalWrite(m1b, LOW);
+//digitalWrite(m2a, LOW);digitalWrite(m2b, HIGH);
+//digitalWrite(m1a, HIGH);digitalWrite(m1b, LOW);
+}
+if(gchr == 's')
+{gchr='x';lcd.clear();lcd.print("Stop ");
+  digitalWrite(m1a, LOW);digitalWrite(m1b, LOW);  digitalWrite(m2a, LOW);digitalWrite(m2b, LOW);
+//digitalWrite(m3a, LOW);digitalWrite(m3b, LOW);
+//digitalWrite(m4a, LOW);digitalWrite(m4b, LOW);
+
+
+//digitalWrite(relay, LOW);
+}
+if(gchr == '1')
+{gchr='x';  digitalWrite(relay1, HIGH);
+}
+if(gchr == '2')
+{gchr='x';  digitalWrite(relay1, LOW);
+}
+if(gchr == '3')
+{gchr='x';  digitalWrite(relay2, HIGH);
+}
+if(gchr == '4')
+{gchr='x';  digitalWrite(relay2, LOW);
+}
+if(gchr == '5')
+{gchr='x';  digitalWrite(relay3, HIGH);
+}
+if(gchr == '6')
+{gchr='x';  digitalWrite(relay3, LOW);
+}
+
+}
+}
